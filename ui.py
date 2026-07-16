@@ -3,6 +3,8 @@ import os
 
 WHITE = (255, 255, 255)
 GREEN = (0, 255, 100)
+YELLOW = (255, 215, 0)
+ORANGE = (255, 140, 0)
 RED = (255, 50, 50)
 GRAY = (100, 110, 120)
 DARK_GRAY = (30, 40, 50)
@@ -23,7 +25,7 @@ class SoundManager:
             'collision': 'collision.wav'
         }
         
-        for name, file in sound_files.annotate_items() if hasattr(sound_files, 'annotate_items') else sound_files.items():
+        for name, file in sound_files.items():
             if os.path.exists(file):
                 try:
                     self.sounds[name] = pygame.mixer.Sound(file)
@@ -83,13 +85,16 @@ class UIManager:
 
     def draw_hud(self, surface, score, high_score, spawn_rate):
         score_lbl = self.font.render(f"SCORE: {score}", True, WHITE)
-        high_score_lbl = self.font.render(f"HIGH SCORE: {high_score}", True, GREEN)
-        spawn_lbl = self.font.render(f"SPAWN INTERVAL: {spawn_rate / 1000:.1f}s", True, WHITE)
+        high_score_lbl = self.font.render(f"HIGH SCORE: {high_score}", True, YELLOW)
+        
+        traffic_level = 4000 / spawn_rate
+        traffic_lbl = self.font.render(f"TRAFFIC LEVEL: {traffic_level:.1f}x", True, ORANGE)
+        
         info_lbl = self.font.render("F: Fullscreen | ESC: Quit | Arrow Keys: Steer selected", True, GRAY)
         
         surface.blit(score_lbl, (20, 20))
         surface.blit(high_score_lbl, (20, 45))
-        surface.blit(spawn_lbl, (20, 70))
+        surface.blit(traffic_lbl, (20, 70))
         surface.blit(info_lbl, (20, SCREEN_HEIGHT - 35))
 
     def draw_game_over(self, surface, reason):

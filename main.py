@@ -63,6 +63,8 @@ def main():
         has_emergency = any(ac.fuel < 50 for ac in aircraft_list)
         if has_emergency and not game_over:
             sound.play('alarm')
+        else:
+            sound.stop_alarm()
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -126,6 +128,7 @@ def main():
                     game_over = True
                     game_over_reason = f"CRASH: {ac.id} ran out of fuel!"
                     sound.play('collision')
+                    sound.stop_alarm()
                     if score > high_score:
                         save_high_score(score)
 
@@ -179,6 +182,7 @@ def main():
                         game_over = True
                         game_over_reason = f"COLLISION between {ac1.id} and {ac2.id}!"
                         sound.play('collision')
+                        sound.stop_alarm()
                         if score > high_score:
                             save_high_score(score)
 
@@ -193,6 +197,7 @@ def main():
 
         pygame.display.flip()
 
+    sound.stop_alarm()
     pygame.quit()
 
 if __name__ == "__main__":
