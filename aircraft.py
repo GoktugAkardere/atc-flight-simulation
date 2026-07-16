@@ -31,15 +31,11 @@ class Aircraft:
         num = random.randint(100, 999)
         self.id = f"{prefix}-{num}"
         
-        # ⛽ DİNAMİK VE GERÇEKÇİ BAŞLANGIÇ YAKITI
-        # %30 ihtimalle uçak kritik yakıtla (60-90 arası) doğar ve hızlıca Mayday'e girer.
-        # %70 ihtimalle normal depoyla (110-180 arası) doğar.
         if random.random() < 0.30:
             self.fuel = random.randint(60, 90)
         else:
             self.fuel = random.randint(110, 180)
         
-        # ☄️ RADAR TRAIL (Radar Kuyruk İzi)
         self.trail = []
 
     def move(self, wind_angle, wind_speed):
@@ -68,13 +64,13 @@ class Aircraft:
 
     def draw(self, surface, is_selected, font):
         if is_selected:
-            main_color = (255, 215, 0)      # Sarı
+            main_color = (255, 215, 0)
             alarm_color = (255, 215, 0)
         elif self.fuel < 50:
             main_color = (255, 50, 50) if pygame.time.get_ticks() % 500 < 250 else (255, 140, 0)
             alarm_color = (255, 50, 50)
         else:
-            main_color = (0, 255, 100)     # Yeşil
+            main_color = (0, 255, 100)
             alarm_color = (0, 255, 100)
 
         for i, pos in enumerate(self.trail):
@@ -96,7 +92,7 @@ class Aircraft:
         if self.fuel < 50:
             lbl_text += " [MAYDAY]"
             
-        lbl = font.render(lbl_text, True, main_color)
+        lbl = font.render(lbl_text, True, main_color) 
         surface.blit(lbl, (self.x + 10, self.y - 15))
         
         fuel_lbl = font.render(f"FUEL: {int(self.fuel)}", True, main_color)

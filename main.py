@@ -23,17 +23,11 @@ def save_high_score(score):
 def main():
     pygame.init()
     
-    # Oyunun orijinal, simetrik çözünürlüğü (1000x750)
     logical_size = (1000, 750)
-    
-    # 🖥️ SCALED MODE SETUP
-    # Pygame'e SCALED flag'i vererek oranların asimetrik bozulmasını engelliyoruz.
-    # Başlangıçta pencereli modda açılır.
     screen = pygame.display.set_mode(logical_size, pygame.SCALED)
     pygame.display.set_caption("Air Traffic Control Simulation V2")
     clock = pygame.time.Clock()
 
-    # Ekran boyut sabitlerini orijinal haline geri çekiyoruz
     import aircraft
     import ui
     aircraft.SCREEN_WIDTH = 1000
@@ -41,7 +35,6 @@ def main():
     ui.SCREEN_WIDTH = 1000
     ui.SCREEN_HEIGHT = 750
 
-    # Modülleri Başlatıyoruz
     ui_manager = UIManager()
     weather = WeatherSystem()
     sound = SoundManager()
@@ -61,7 +54,6 @@ def main():
     wind_change_event = pygame.USEREVENT + 2
     pygame.time.set_timer(wind_change_event, 10000)
 
-    # Tam ekran durumunu takip eden değişken
     is_fullscreen = False
 
     running = True
@@ -97,18 +89,14 @@ def main():
                         selected_aircraft = None
                         
             elif event.type == pygame.KEYDOWN:
-                # 🖥️ 'F' TUŞU: Tam Ekran / Pencere Modu Geçişi (Toggle)
                 if event.key == pygame.K_f:
                     is_fullscreen = not is_fullscreen
                     if is_fullscreen:
-                        # Tam ekran moduna pürüzsüz oran korumasıyla geçiş yap
                         screen = pygame.display.set_mode(logical_size, pygame.SCALED | pygame.FULLSCREEN)
                     else:
-                        # Orijinal pencere moduna geri dön
                         screen = pygame.display.set_mode(logical_size, pygame.SCALED)
                 
                 elif event.key == pygame.K_ESCAPE:
-                    # ESC tuşuna basıldığında oyunu kapatır
                     running = False
                     
                 elif game_over and event.key == pygame.K_r:
@@ -172,7 +160,6 @@ def main():
                     selected_aircraft = None
                 aircraft_list.remove(ac)
 
-        # Çizimler
         screen.fill(BG_COLOR)
         ui_manager.draw_radar_rings(screen)
         ui_manager.draw_runway(screen)
