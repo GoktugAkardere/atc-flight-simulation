@@ -1,8 +1,6 @@
-import pygame
 import random
 import math
-
-CYAN = (0, 238, 238)
+import pygame
 
 class WeatherSystem:
     def __init__(self):
@@ -10,23 +8,18 @@ class WeatherSystem:
         self.wind_speed = random.uniform(0.1, 0.4)
 
     def update_wind(self):
-        self.wind_angle = random.randint(0, 359)
-        self.wind_speed = random.uniform(0.15, 0.5)
+        self.wind_angle = (self.wind_angle + random.randint(-30, 30)) % 360
+        self.wind_speed = max(0.05, min(0.6, self.wind_speed + random.uniform(-0.05, 0.05)))
 
     def draw_wind_indicator(self, surface, x, y, font):
-        # Pusula arka planı
-        pygame.draw.circle(surface, (20, 35, 60), (x, y), 30, 0)
-        pygame.draw.circle(surface, CYAN, (x, y), 30, 1)
+        pygame.draw.circle(surface, (30, 45, 80), (x, y), 25, 2)
         
-        # Rüzgar oku çizimi
         rad = math.radians(self.wind_angle)
-        arrow_end_x = x + 23 * math.cos(rad)
-        arrow_end_y = y + 23 * math.sin(rad)
-        pygame.draw.line(surface, CYAN, (x, y), (arrow_end_x, arrow_end_y), 2)
-        pygame.draw.circle(surface, CYAN, (int(arrow_end_x), int(arrow_end_y)), 3)
+        end_x = x + 20 * math.cos(rad)
+        end_y = y + 20 * math.sin(rad)
         
-        # Yazı göstergeleri
-        title_lbl = font.render("WIND", True, CYAN)
-        info_lbl = font.render(f"{int(self.wind_speed * 10)} KTS", True, CYAN)
-        surface.blit(title_lbl, (x - 15, y + 33))
-        surface.blit(info_lbl, (x - 18, y + 48))
+        pygame.draw.line(surface, (100, 200, 255), (x, y), (end_x, end_y), 3)
+        pygame.draw.circle(surface, (100, 200, 255), (int(end_x), int(end_y)), 4)
+        
+        lbl = font.render(f"WIND: {self.wind_speed * 10:.1f} KT", True, (100, 200, 255))
+        surface.blit(lbl, (x - 35, y + 30))
